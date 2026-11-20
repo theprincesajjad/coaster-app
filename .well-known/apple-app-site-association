@@ -1,0 +1,17 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "TEAMID_PLACEHOLDER.ca.marcadot.coaster"
+        ],
+        "components": [
+          {
+            "/": "/i/*",
+            "comment": "Friend invite links, e.g. /i/K7Q4-2MZD"
+          }
+        ]
+      }
+    ]
+  }
+}

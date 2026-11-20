@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>You’re invited to Coaster</title>
+<meta name="description" content="A friend sent you their Coaster code.">
+<meta name="theme-color" content="#FBF7F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1C1411" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="You’re invited to Coaster">
+<meta property="og:description" content="A friend sent you their Coaster code.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..600,100;1,9..144,400..600,100&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
+<meta name="robots" content="noindex">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="lockup" href="../" aria-label="Coaster home"><img src="../assets/mark.svg" alt="" width="30" height="30"><span>Coaster</span></a>
+    <nav class="nav" aria-label="Main"><a href="../help/">Help</a><a href="../privacy/">Privacy</a></nav>
+  </div>
+</header>
+<main id="main">
+
+<section class="invite"><div class="wrap">
+  <div class="card" id="invite">
+    <img class="mark" src="../assets/mark.svg" alt="" width="72" height="72">
+    <h1 id="title">You’re invited to Coaster</h1>
+    <p id="sub" class="muted">Someone wants you on their shelf. Here is their friend code.</p>
+    <div id="has-code">
+      <p class="code" id="code" aria-label="Friend code">&nbsp;</p>
+      <button class="btn btn-quiet" id="copy" type="button">Copy code</button>
+      <p class="fine" id="copied" role="status" aria-live="polite"></p>
+      <div class="stack">
+        <button class="btn btn-primary" type="button" aria-disabled="true" id="get">Get Coaster · coming soon</button>
+      </div>
+      <p class="fine">Coaster is coming soon to the App Store for iPhone. Once you have it, open Friends, tap Add friend and type this code.</p>
+    </div>
+    <div id="no-code" hidden>
+      <p class="muted">This invite link is missing its code. Ask your friend to send it again, or type their code in Coaster under Friends › Add friend.</p>
+      <div class="stack"><a class="btn btn-primary" href="../">What is Coaster?</a></div>
+    </div>
+  </div>
+</div></section>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var raw = q.get("c") || q.get("code") || "";
+  if (!raw) {
+    var m = location.pathname.match(/\/i\/([^\/?#]+)\/?$/);
+    if (m) raw = decodeURIComponent(m[1]);
+  }
+  var clean = raw.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  var code = /^[A-Z0-9]{8}$/.test(clean) ? clean.slice(0, 4) + "-" + clean.slice(4) : "";
+  var name = (q.get("n") || q.get("name") || "").replace(/[\u0000-\u001f<>]/g, "").trim().slice(0, 30);
+  var title = document.getElementById("title");
+  var sub = document.getElementById("sub");
+  if (!code) {
+    document.getElementById("has-code").hidden = true;
+    document.getElementById("no-code").hidden = false;
+    title.textContent = "This invite needs a code";
+    sub.hidden = true;
+    return;
+  }
+  document.getElementById("code").textContent = code;
+  if (name) {
+    title.textContent = name + " invited you to Coaster";
+    sub.textContent = "Add " + name + " as a friend to see the drinks they share. Here is their code.";
+    document.title = name + " invited you to Coaster";
+  }
+  var copied = document.getElementById("copied");
+  document.getElementById("copy").addEventListener("click", function () {
+    function done() { copied.textContent = "Copied " + code; }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(code).then(done, fallback);
+    } else { fallback(); }
+    function fallback() {
+      var t = document.createElement("textarea");
+      t.value = code; t.setAttribute("readonly", ""); t.style.position = "absolute"; t.style.left = "-9999px";
+      document.body.appendChild(t); t.select();
+      try { document.execCommand("copy"); done(); } catch (e) { copied.textContent = "Select the code to copy it."; }
+      document.body.removeChild(t);
+    }
+  });
+  document.getElementById("get").addEventListener("click", function (e) { e.preventDefault(); });
+})();
+</script>
+
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <span>Coaster, for iPhone. Coming soon to the App Store.</span>
+    <nav aria-label="Footer">
+      <a href="../help/">Help</a><a href="../privacy/">Privacy</a><a href="../terms/">Terms</a><a href="https://github.com/theprincesajjad/coaster-app/issues">Contact</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
